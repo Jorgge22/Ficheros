@@ -1,0 +1,17 @@
+@startuml ficheros
+class Usuario {
+    - Codigo:String
+    - Aficiones[]:String
+}
+
+class Fichero {
+    - List<Usuario> usuarios
+
+    + leerFichero()
+    + anyadirUsuario()
+    + mostrarUsuarios()
+    + generarFicheroConcordancia()
+}
+
+Usuario ..> Fichero : usa
+@enduml
