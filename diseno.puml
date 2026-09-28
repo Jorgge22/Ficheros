@@ -1,17 +1,21 @@
 @startuml ficheros
 class Usuario {
     - Codigo:String
-    - Aficiones[]:String
+    - aficiones: List<String>
 }
 
 class Fichero {
-    - List<Usuario> usuarios
+    - usuarios: List<Usuario>
+    - ficheros: List<Fichero>
 
     + leerFichero()
+    + mostrarFicheros()
+    + generarCodigo()
     + anyadirUsuario()
     + mostrarUsuarios()
+    + compararPareja()
     + generarFicheroConcordancia()
 }
 
-Usuario ..> Fichero : usa
+Usuario <..> Fichero : usa
 @enduml
