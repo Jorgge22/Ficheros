@@ -119,7 +119,32 @@ public class Fichero {
     }
 
     public String generarCodigo(){
-        return "";
+        if (usuarios.isEmpty()){
+            return "U100";
+        } else {
+            /**
+             * Cojo el último usuario de la lista
+             */
+            Usuario ultimoUsuario = usuarios.get(usuarios.size()-1);
+            String codigo = ultimoUsuario.getCodigo();
+
+            /**
+             * Saco la letra del código y me quedo con los números
+             */
+            codigo = codigo.substring(1);
+
+            /**
+             * Lo paso a int
+             */
+            int numeros = Integer.parseInt(codigo);
+
+            /**
+             * Le sumo 1 al código para seguir con la lista
+             */
+            numeros += 1;
+
+            return "U" + numeros;
+        }
     }
 
     public void anyadirUsuarios(List<String> aficiones, String ruta){
