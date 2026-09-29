@@ -1,17 +1,24 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Fichero {
+    private String nombreFichero;
     private List<Usuario> usuarios;
     private List<Fichero> ficheros;
 
-    public Fichero() {
+    public Fichero(String nombreFichero) {
+        this.nombreFichero = nombreFichero;
         this.usuarios = new ArrayList<>();
         this.ficheros = new ArrayList<>();
+    }
+
+    public String getNombreFichero() {
+        return nombreFichero;
+    }
+
+    public void setNombreFichero(String nombreFichero) {
+        this.nombreFichero = nombreFichero;
     }
 
     public List<Usuario> getUsuarios() {
@@ -71,8 +78,44 @@ public class Fichero {
         }
     }
 
-    public void mostrarFicheros(){
+    public void cargarFicheros(){
+        /**
+         * Vacío la lista para evitar duplicados
+         */
+        ficheros.clear();
 
+        /**
+         * Le indico que los ficheros están en la raiz del proyecto
+         */
+        File fichero = new File(".");
+
+        /**
+         * Listo los ficheros
+         */
+        String[] nombreFichero = fichero.list();
+
+        if (nombreFichero != null){
+            for (String nombre : nombreFichero) {
+                if (nombre.endsWith(".txt")){
+                    Fichero f = new Fichero(nombre);
+                    ficheros.add(f);
+                }
+            }
+        }
+    }
+
+    public String mostrarFicheros(){
+        String nombre = "";
+
+        if (ficheros.isEmpty()) {
+            return "No hay ficheros creados";
+        }
+
+        for (Fichero fichero : ficheros) {
+            nombre += fichero.getNombreFichero() + "\n";
+        }
+
+        return nombre;
     }
 
     public String generarCodigo(){
