@@ -5,10 +5,12 @@ class Usuario {
 }
 
 class Fichero {
+    - nombreFichero: String
     - usuarios: List<Usuario>
     - ficheros: List<Fichero>
 
     + leerFichero()
+    + cargarFicheros()
     + mostrarFicheros()
     + generarCodigo()
     + anyadirUsuario()
