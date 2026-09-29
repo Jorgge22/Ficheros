@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
         Fichero fichero = new Fichero("");
@@ -5,6 +8,10 @@ public class App {
         fichero.cargarFicheros();
         System.out.println("Ficheros en sistema: " + fichero.mostrarFicheros());
 
-        //fichero.leerFichero("C:\\Users\\Propietario\\Documents\\2ºDAM_2026-2027\\Acceso a Datos\\Ficheros\\usuarios.txt");
+        List<String> aficiones = new ArrayList<>();
+        aficiones.add("P, A");
+        fichero.anyadirUsuarios(aficiones, "usu.txt");
+
+        fichero.leerFichero("C:\\Users\\Propietario\\Documents\\2ºDAM_2026-2027\\Acceso a Datos\\Ficheros\\usuarios.txt");
     }
 }
