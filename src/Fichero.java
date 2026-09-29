@@ -37,44 +37,55 @@ public class Fichero {
         this.ficheros = ficheros;
     }
 
-    public void leerFichero(String rutaFichero){
+    public void leerFichero(String rutaFichero) {
         /*
-         * Si la lista está vacía creamos un fichero
+         * Si la lista de ficheros está vacía, nos aseguramos de que el archivo existe
          */
-        if (ficheros.isEmpty()){
+        if (ficheros.isEmpty()) {
             try (FileWriter fileWriter = new FileWriter(rutaFichero, true)) {
                 fileWriter.write("");
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error al verificar/crear el fichero: " + e.getMessage());
             }
-            try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
-                String linea;
-                while ((linea = br.readLine()) != null) {
-                    System.out.println(linea);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }
 
-            //Borrar fichero
-            //File file = new File(ruta);
-            //if (file.delete()) {
-            //System.out.println("Fichero eliminadoS");
-            //} else
-            //  System.out.println("No se ha borrado");
-            //}
-        } else {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(rutaFichero));
-                String linea;
+        /*
+         * Vaciamos la lista en memoria antes de leer para evitar duplicados
+         */
+        this.usuarios.clear();
 
-                while ((linea = br.readLine()) != null) {
-                    System.out.println(linea);
+        /*
+         * Leemos el archivo y convertimos cada línea en un objeto Usuario
+         */
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                /**
+                 * Ignoramos líneas vacías
+                 */
+                if (linea.trim().isEmpty()) {
+                    continue;
                 }
 
-            } catch (Exception e) {
-                throw new RuntimeException();
+                String[] partes = linea.split(" ");
+                List<String> aficiones = new ArrayList<>();
+
+                for (int i = 1; i < partes.length; i++) {
+                    aficiones.add(partes[i]);
+                }
+
+                /**
+                 * Creamos el usuario y lo añadimos a la lista en memoria
+                 */
+                Usuario usuario = new Usuario(partes[0], aficiones);
+                this.usuarios.add(usuario);
             }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("El fichero no existe: " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el archivo: " + e.getMessage());
         }
     }
 
@@ -162,7 +173,18 @@ public class Fichero {
         }
     }
 
-    public void mostrarUsuarios(){}
+    public String mostrarUsuarios() throws Exception {
+        String resultado = "";
+
+        if (usuarios.isEmpty()){
+            throw new Exception("No hay usuarios en la lista.");
+        } else {
+            for (Usuario u : usuarios) {
+                resultado += u.toFormatoFichero() + "\n";
+            }
+        }
+        return resultado;
+    }
 
     public void compararPareja(){}
 
