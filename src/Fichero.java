@@ -186,7 +186,31 @@ public class Fichero {
         return resultado;
     }
 
-    public void compararPareja(){}
+    public List<Pareja> compararPareja(){
+        List<Pareja> parejas = new ArrayList<>();
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            for (int j = i + 1; j < usuarios.size(); j++) {
+                int numeroConcordancias = 0;
+
+                Usuario usuario1 = this.usuarios.get(i);
+                Usuario usuario2 = this.usuarios.get(j);
+
+                for (int k = 0; k < usuario1.getAficiones().size(); k++) {
+                    String aficion = usuario1.getAficiones().get(k);
+
+                    if (usuario2.getAficiones().contains(aficion)){
+                        numeroConcordancias += 1;
+                    }
+                }
+
+                Pareja nuevaPareja = new Pareja(usuario1, usuario2, numeroConcordancias);
+                parejas.add(nuevaPareja);
+            }
+        }
+
+        return parejas;
+    }
 
     public void generarFicheroConcordancia(){}
 }
