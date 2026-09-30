@@ -1,7 +1,13 @@
 @startuml ficheros
 class Usuario {
-    - Codigo:String
+    - codigo:String
     - aficiones: List<String>
+}
+
+class Pareja {
+    - usuario1: Usuario
+    - usuario2: Usuario
+    - numeroConcordancia: int
 }
 
 class Fichero {
@@ -17,6 +23,13 @@ class Fichero {
     + mostrarUsuarios()
     + compararPareja()
     + generarFicheroConcordancia()
+}
+
+class Excepciones {
+
+}
+
+interface GestorFichero {
 }
 
 Usuario <..> Fichero : usa
