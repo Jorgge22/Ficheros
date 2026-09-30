@@ -212,5 +212,22 @@ public class Fichero {
         return parejas;
     }
 
-    public void generarFicheroConcordancia(){}
+    public void generarFicheroConcordancia(int concordanciasPedidas, String nombreFichero){
+        List<Pareja> parejas = compararPareja();
+
+        parejas.sort((parejaA, parejaB) -> parejaB.getNumeroConcordancia() - parejaA.getNumeroConcordancia());
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
+            for (Pareja p : parejas) {
+                if (p.getNumeroConcordancia() >= concordanciasPedidas) {
+                    //Crear fichero
+                    bw.write(p.toString());
+                    bw.newLine();
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
 }
