@@ -101,67 +101,72 @@ public class App {
                     gestor.setNombreFichero(nombre);
                     gestor.leerFichero(nombre);
 
-                    GestorEntradaSalida.imprimirMensajeSeparado("MENU PRINCIPAl");
-                    GestorEntradaSalida.imprimirMensajeSeparado("1. Añadir usuario");
-                    GestorEntradaSalida.imprimirMensajeSeparado("2. Mostrar usuarios introducidos");
-                    GestorEntradaSalida.imprimirMensajeSeparado("3. Generar fichero concordancias");
-                    GestorEntradaSalida.imprimirMensajeSeparado("5. Salir");
-                    GestorEntradaSalida.imprimirMensaje("Elige una opción: ");
-                    opcion = GestorEntradaSalida.leerInt();
+                    boolean salirMenu = false;
 
-                    switch (opcion){
-                        case 1:
-                            /**
-                             * Añadir nuevo usuario
-                             */
-                            GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
-                            String aficiones = GestorEntradaSalida.leerLinea().toUpperCase();
+                    while (!salirMenu){
+                        GestorEntradaSalida.imprimirMensajeSeparado("MENU PRINCIPAl");
+                        GestorEntradaSalida.imprimirMensajeSeparado("1. Añadir usuario");
+                        GestorEntradaSalida.imprimirMensajeSeparado("2. Mostrar usuarios introducidos");
+                        GestorEntradaSalida.imprimirMensajeSeparado("3. Generar fichero concordancias");
+                        GestorEntradaSalida.imprimirMensajeSeparado("5. Salir");
+                        GestorEntradaSalida.imprimirMensaje("Elige una opción: ");
+                        opcion = GestorEntradaSalida.leerInt();
 
-                            String[] partes = aficiones.trim().split(" ");
+                        switch (opcion){
+                            case 1:
+                                /**
+                                 * Añadir nuevo usuario
+                                 */
+                                GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
+                                String aficiones = GestorEntradaSalida.leerLinea().toUpperCase();
 
-                            List<String> listaAficiones = new ArrayList<>();
-                            for (String aficion : partes) {
-                                if (!aficion.isEmpty()) {
-                                    listaAficiones.add(aficion);
+                                String[] partes = aficiones.trim().split(" ");
+
+                                List<String> listaAficiones = new ArrayList<>();
+                                for (String aficion : partes) {
+                                    if (!aficion.isEmpty()) {
+                                        listaAficiones.add(aficion);
+                                    }
                                 }
-                            }
 
-                            try {
-                                gestor.anyadirUsuarios(listaAficiones, nombre);
-                            } catch (Exception e) {
-                                GestorEntradaSalida.imprimirMensajeSeparado(e.getMessage());
-                            }
-                            break;
+                                try {
+                                    gestor.anyadirUsuarios(listaAficiones, nombre);
+                                } catch (Exception e) {
+                                    GestorEntradaSalida.imprimirMensajeSeparado(e.getMessage());
+                                }
+                                break;
 
-                        case 2:
-                            /**
-                             * Mostrar usuarios
-                             */
-                            GestorEntradaSalida.imprimirMensajeSeparado("Estos son los usuarios:");
-                            GestorEntradaSalida.imprimirMensaje(gestor.mostrarUsuarios());
-                            break;
+                            case 2:
+                                /**
+                                 * Mostrar usuarios
+                                 */
+                                GestorEntradaSalida.imprimirMensajeSeparado("Estos son los usuarios:");
+                                GestorEntradaSalida.imprimirMensaje(gestor.mostrarUsuarios());
+                                break;
 
-                        case 3:
-                            /**
-                             * Generar fichero concordancias
-                             */
-                            GestorEntradaSalida.imprimirMensaje("¿Cuántas concordancias deseas?: ");
-                            int numConcordancias = GestorEntradaSalida.leerInt();
+                            case 3:
+                                /**
+                                 * Generar fichero concordancias
+                                 */
+                                GestorEntradaSalida.imprimirMensaje("¿Cuántas concordancias deseas?: ");
+                                int numConcordancias = GestorEntradaSalida.leerInt();
 
-                            if (ficheroSistema.isEmpty()){
-                                GestorEntradaSalida.imprimirMensajeSeparado("No hay usuarios.");
-                            }
+                                if (ficheroSistema.isEmpty()){
+                                    GestorEntradaSalida.imprimirMensajeSeparado("No hay usuarios.");
+                                }
 
-                            gestor.generarFicheroConcordancia(numConcordancias, "concordancias.txt");
-                            break;
+                                gestor.generarFicheroConcordancia(numConcordancias, "concordancias.txt");
+                                break;
 
-                        case 5:
-                            /**
-                             * Salir
-                             */
-                            GestorEntradaSalida.imprimirMensajeSeparado("Saliendo del programa...");
-                            salir = true;
-                            break;
+                            case 5:
+                                /**
+                                 * Salir
+                                 */
+                                GestorEntradaSalida.imprimirMensajeSeparado("Saliendo del programa...");
+                                salirMenu = true;
+                                salir = true;
+                                break;
+                        }
                     }
                 }
             }
