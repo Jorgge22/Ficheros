@@ -13,11 +13,11 @@ public class App {
 
         while (!salir){
             GestorEntradaSalida.imprimirMensajeSeparado("BIENVENIDO");
-            GestorEntradaSalida.imprimirMensajeSeparado("Estos son los ficheros que hay en el sistema: ");
 
-            gestor.cargarFicheros();
-            List<Fichero> ficheroSistema = gestor.getFicheros();
-            GestorEntradaSalida.imprimirMensajeSeparado(gestor.mostrarFicheros());
+            //gestor.cargarFicheros();
+            //List<Fichero> ficheroSistema = gestor.getFicheros();
+            List<Fichero> ficheroSistema = gestor.cargarFicheros();
+            //GestorEntradaSalida.imprimirMensajeSeparado(gestor.mostrarFicheros());
 
             if (ficheroSistema.isEmpty()){
                 GestorEntradaSalida.imprimirMensajeSeparado("No hay ficheros en el sistema.");
@@ -25,11 +25,15 @@ public class App {
                 char respuesta = GestorEntradaSalida.leerChar();
 
                 if (respuesta == 'S' || respuesta == 's') {
-                    GestorEntradaSalida.imprimirMensaje("¿Que nombre va a tener tu fichero? (terminado en .txt): ");
+                    GestorEntradaSalida.imprimirMensaje("¿Que nombre va a tener tu fichero?: ");
                     String nombreFicheroNuevo = GestorEntradaSalida.leerLinea();
 
+                    if (!nombreFicheroNuevo.endsWith(".txt")){
+                        nombreFicheroNuevo += ".txt";
+                    }
+
                     GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene?: ");
-                    String aficiones = GestorEntradaSalida.leerLinea();
+                    String aficiones = GestorEntradaSalida.leerLinea().toUpperCase();
 
                     String[] partes = aficiones.split(" ");
 
@@ -52,11 +56,18 @@ public class App {
                     return;
                 }
             } else {
+                GestorEntradaSalida.imprimirMensajeSeparado("Estos son los ficheros que hay en el sistema: ");
+                gestor.cargarFicheros();
+
+                ficheroSistema = gestor.cargarFicheros();
+                GestorEntradaSalida.imprimirMensajeSeparado(gestor.mostrarFicheros());
+
                 GestorEntradaSalida.imprimirMensaje("¿Qué fichero quieres seleccionar?: ");
                 int ficheroElegido = GestorEntradaSalida.leerInt();
 
                 if (ficheroElegido < 1 || ficheroElegido > ficheroSistema.size() + 1) {
                     GestorEntradaSalida.imprimirMensajeSeparado("Opción inválida.");
+
                 } else if (ficheroElegido == ficheroSistema.size() + 1) {
                     GestorEntradaSalida.imprimirMensaje("¿Cómo quieres que se llame tu fichero?: ");
                     String nombreFichero = GestorEntradaSalida.leerLinea();
@@ -69,7 +80,7 @@ public class App {
 
                     try {
                         GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
-                        String aficiones = GestorEntradaSalida.leerLinea();
+                        String aficiones = GestorEntradaSalida.leerLinea().toUpperCase();
 
                         String[] partes = aficiones.trim().split(" ");
 
@@ -104,7 +115,7 @@ public class App {
                              * Añadir nuevo usuario
                              */
                             GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
-                            String aficiones = GestorEntradaSalida.leerLinea();
+                            String aficiones = GestorEntradaSalida.leerLinea().toUpperCase();
 
                             String[] partes = aficiones.trim().split(" ");
 
