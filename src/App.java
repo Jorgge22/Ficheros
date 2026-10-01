@@ -61,6 +61,10 @@ public class App {
                     GestorEntradaSalida.imprimirMensaje("¿Cómo quieres que se llame tu fichero?: ");
                     String nombreFichero = GestorEntradaSalida.leerLinea();
 
+                    if (!nombreFichero.toLowerCase().endsWith(".txt")){
+                        nombreFichero += ".txt";
+                    }
+
                     GestorEntradaSalida.imprimirMensaje("");
 
                     try {
