@@ -55,8 +55,31 @@ public class App {
                 GestorEntradaSalida.imprimirMensaje("¿Qué fichero quieres seleccionar?: ");
                 int ficheroElegido = GestorEntradaSalida.leerInt();
 
-                if (ficheroElegido < 1) {
+                if (ficheroElegido < 1 || ficheroElegido > ficheroSistema.size() + 1) {
                     GestorEntradaSalida.imprimirMensajeSeparado("Opción inválida.");
+                } else if (ficheroElegido == ficheroSistema.size() + 1) {
+                    GestorEntradaSalida.imprimirMensaje("¿Cómo quieres que se llame tu fichero?: ");
+                    String nombreFichero = GestorEntradaSalida.leerLinea();
+
+                    GestorEntradaSalida.imprimirMensaje("");
+
+                    try {
+                        GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
+                        String aficiones = GestorEntradaSalida.leerLinea();
+
+                        String[] partes = aficiones.trim().split(" ");
+
+                        List<String> listaAficiones = new ArrayList<>();
+                        for (String aficion : partes) {
+                            if (!aficion.isEmpty()) {
+                                listaAficiones.add(aficion);
+                            }
+                        }
+
+                        gestor.anyadirUsuarios(listaAficiones, nombreFichero);
+                    } catch (Exception e) {
+                        GestorEntradaSalida.imprimirMensajeSeparado(e.getMessage());
+                    }
                 } else {
                     Fichero ficheroSeleccionado = ficheroSistema.get(ficheroElegido - 1);
                     String nombre = ficheroSeleccionado.getNombreFichero();
