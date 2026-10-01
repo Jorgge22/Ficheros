@@ -1,6 +1,14 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import util.GestorEntradaSalida;
 
 public class Fichero {
     private String nombreFichero;
@@ -38,7 +46,7 @@ public class Fichero {
     }
 
     public void leerFichero(String rutaFichero) {
-        /*
+        /**
          * Si la lista de ficheros está vacía, nos aseguramos de que el archivo existe
          */
         if (ficheros.isEmpty()) {
@@ -49,12 +57,12 @@ public class Fichero {
             }
         }
 
-        /*
+        /**
          * Vaciamos la lista en memoria antes de leer para evitar duplicados
          */
         this.usuarios.clear();
 
-        /*
+        /**
          * Leemos el archivo y convertimos cada línea en un objeto Usuario
          */
         try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
@@ -89,7 +97,7 @@ public class Fichero {
         }
     }
 
-    public List<Fichero> cargarFicheros(){
+    public List<Fichero> cargarFicheros() {
         /**
          * Vacío la lista para evitar duplicados
          */
@@ -105,9 +113,9 @@ public class Fichero {
          */
         String[] nombreFichero = fichero.list();
 
-        if (nombreFichero != null){
+        if (nombreFichero != null) {
             for (String nombre : nombreFichero) {
-                if (nombre.endsWith(".txt")){
+                if (nombre.endsWith(".txt")) {
                     Fichero f = new Fichero(nombre);
                     ficheros.add(f);
                 }
@@ -116,24 +124,24 @@ public class Fichero {
         return ficheros;
     }
 
-    public String mostrarFicheros(){
+    public String mostrarFicheros() {
         String nombre = "";
 
         for (int i = 0; i < ficheros.size(); i++) {
             nombre += (i + 1) + " - " + ficheros.get(i).getNombreFichero() + "\n";
         }
 
-        return nombre + (ficheros.size()+1) + " - " + "Crear nuevo fichero" + "\n";
+        return nombre + (ficheros.size() + 1) + " - " + "Crear nuevo fichero" + "\n";
     }
 
-    public String generarCodigo(){
-        if (usuarios.isEmpty()){
+    public String generarCodigo() {
+        if (usuarios.isEmpty()) {
             return "U100";
         } else {
             /**
              * Cojo el último usuario de la lista
              */
-            Usuario ultimoUsuario = usuarios.get(usuarios.size()-1);
+            Usuario ultimoUsuario = usuarios.get(usuarios.size() - 1);
             String codigo = ultimoUsuario.getCodigo();
 
             /**
@@ -155,9 +163,9 @@ public class Fichero {
         }
     }
 
-    public void anyadirUsuarios(List<String> aficiones, String ruta){
-        if (aficiones.isEmpty()){
-            //TODO Mensaje de error
+    public void anyadirUsuarios(List<String> aficiones, String ruta) {
+        if (aficiones.isEmpty()) {
+            GestorEntradaSalida.imprimirMensajeSeparado("No hay usuarios en la lista.");
             return;
         } else {
             try (FileWriter fileWriter = new FileWriter(ruta, true)) {
@@ -173,17 +181,17 @@ public class Fichero {
     public String mostrarUsuarios() throws Exception {
         String resultado = "";
 
-        if (usuarios.isEmpty()){
+        if (usuarios.isEmpty()) {
             throw new Exception("No hay usuarios en la lista.");
         } else {
             for (Usuario u : usuarios) {
-                resultado += u.toFormatoFichero() + "\n";
+                resultado += u.toString() + "\n";
             }
         }
         return resultado;
     }
 
-    public List<Pareja> compararPareja(){
+    public List<Pareja> compararPareja() {
         List<Pareja> parejas = new ArrayList<>();
 
         for (int i = 0; i < usuarios.size(); i++) {
@@ -196,7 +204,7 @@ public class Fichero {
                 for (int k = 0; k < usuario1.getAficiones().size(); k++) {
                     String aficion = usuario1.getAficiones().get(k);
 
-                    if (usuario2.getAficiones().contains(aficion)){
+                    if (usuario2.getAficiones().contains(aficion)) {
                         numeroConcordancias += 1;
                     }
                 }
@@ -209,22 +217,42 @@ public class Fichero {
         return parejas;
     }
 
-    public void generarFicheroConcordancia(int concordanciasPedidas, String nombreFichero){
+    public int generarFicheroConcordancia(int concordanciasPedidas, String nombreFichero) throws IOException {
         List<Pareja> parejas = compararPareja();
 
+        /**
+         * Ordeno las parejas de mayor a menor por número de aficiones
+         */
         parejas.sort((parejaA, parejaB) -> parejaB.getNumeroConcordancia() - parejaA.getNumeroConcordancia());
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
-            for (Pareja p : parejas) {
-                if (p.getNumeroConcordancia() >= concordanciasPedidas) {
-                    //Crear fichero
-                    bw.write(p.toString());
-                    bw.newLine();
-                }
+        /**
+         * Guardo en una lista únicamente las parejas que superan o igualan el mínimo pedido
+         */
+        List<Pareja> parejasValidas = new ArrayList<>();
+        for (Pareja p : parejas) {
+            if (p.getNumeroConcordancia() >= concordanciasPedidas) {
+                parejasValidas.add(p);
             }
-        } catch (Exception e){
-            System.out.println(e.getMessage());
         }
+
+        /**
+         * Si no hay ninguna pareja válida, no creo el fichero y devuelvo 0
+         */
+        if (parejasValidas.isEmpty()) {
+            return 0;
+        }
+
+        /**
+         * Si hay parejas válidas, creo el fichero y escribo las coincidencias
+         */
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
+            for (Pareja p : parejasValidas) {
+                bw.write(p.toString());
+                bw.newLine();
+            }
+        }
+
+        return parejasValidas.size();
 
     }
 }
