@@ -89,7 +89,7 @@ public class Fichero {
         }
     }
 
-    public void cargarFicheros(){
+    public List<Fichero> cargarFicheros(){
         /**
          * Vacío la lista para evitar duplicados
          */
@@ -113,20 +113,17 @@ public class Fichero {
                 }
             }
         }
+        return ficheros;
     }
 
     public String mostrarFicheros(){
         String nombre = "";
 
-        if (ficheros.isEmpty()) {
-            return "No hay ficheros creados";
+        for (int i = 0; i < ficheros.size(); i++) {
+            nombre += (i + 1) + " - " + ficheros.get(i).getNombreFichero() + "\n";
         }
 
-        for (Fichero fichero : ficheros) {
-            nombre += fichero.getNombreFichero() + "\n";
-        }
-
-        return nombre;
+        return nombre + (ficheros.size()+1) + " - " + "Crear nuevo fichero" + "\n";
     }
 
     public String generarCodigo(){
