@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "(" + codigo + "{" + String.join("| ", aficiones) + "})";
+        return codigo + " -> [" + String.join(", ", aficiones) + "]";
     }
 
     public String toFormatoFichero() {
