@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws Exception {
         int opcion;
         boolean salir = false;
         Fichero gestor = new Fichero("");
@@ -53,47 +53,80 @@ public class App {
                 }
             } else {
                 GestorEntradaSalida.imprimirMensaje("¿Qué fichero quieres seleccionar?: ");
-                int opcionFichero = GestorEntradaSalida.leerInt();
+                int ficheroElegido = GestorEntradaSalida.leerInt();
 
-                gestor.mostrarFicheros();
+                if (ficheroElegido < 1) {
+                    GestorEntradaSalida.imprimirMensajeSeparado("Opción inválida.");
+                } else {
+                    Fichero ficheroSeleccionado = ficheroSistema.get(ficheroElegido - 1);
+                    String nombre = ficheroSeleccionado.getNombreFichero();
+                    gestor.setNombreFichero(nombre);
+                    gestor.leerFichero(nombre);
 
+                    GestorEntradaSalida.imprimirMensajeSeparado("MENU PRINCIPAl");
+                    GestorEntradaSalida.imprimirMensajeSeparado("1. Añadir usuario");
+                    GestorEntradaSalida.imprimirMensajeSeparado("2. Mostrar usuarios introducidos");
+                    GestorEntradaSalida.imprimirMensajeSeparado("3. Generar fichero concordancias");
+                    GestorEntradaSalida.imprimirMensajeSeparado("5. Salir");
+                    GestorEntradaSalida.imprimirMensaje("Elige una opción: ");
+                    opcion = GestorEntradaSalida.leerInt();
 
+                    switch (opcion){
+                        case 1:
+                            /**
+                             * Añadir nuevo usuario
+                             */
+                            GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: aficion1 aficion2 aficion3): ");
+                            String aficiones = GestorEntradaSalida.leerLinea();
+
+                            String[] partes = aficiones.trim().split(" ");
+
+                            List<String> listaAficiones = new ArrayList<>();
+                            for (String aficion : partes) {
+                                if (!aficion.isEmpty()) {
+                                    listaAficiones.add(aficion);
+                                }
+                            }
+
+                            try {
+                                gestor.anyadirUsuarios(listaAficiones, nombre);
+                            } catch (Exception e) {
+                                GestorEntradaSalida.imprimirMensajeSeparado(e.getMessage());
+                            }
+                            break;
+
+                        case 2:
+                            /**
+                             * Mostrar usuarios
+                             */
+                            GestorEntradaSalida.imprimirMensajeSeparado("Estos son los usuarios:");
+                            GestorEntradaSalida.imprimirMensaje(gestor.mostrarUsuarios());
+                            break;
+
+                        case 3:
+                            /**
+                             * Generar fichero concordancias
+                             */
+                            GestorEntradaSalida.imprimirMensaje("¿Cuántas concordancias deseas?: ");
+                            int numConcordancias = GestorEntradaSalida.leerInt();
+
+                            if (ficheroSistema.isEmpty()){
+                                GestorEntradaSalida.imprimirMensajeSeparado("No hay usuarios.");
+                            }
+
+                            gestor.generarFicheroConcordancia(numConcordancias, "concordancias.txt");
+                            break;
+
+                        case 5:
+                            /**
+                             * Salir
+                             */
+                            GestorEntradaSalida.imprimirMensajeSeparado("Saliendo del programa...");
+                            salir = true;
+                            break;
+                    }
+                }
             }
         }
     }
 }
-
-
-switch (opcionFichero){
-        case 1:
-        // Añadir usuario
-        GestorEntradaSalida.imprimirMensaje("¿Nombre del nuevo usuario?: ");
-String nuevoNombre = GestorEntradaSalida.leerLinea();
-
-                        GestorEntradaSalida.imprimirMensaje("¿Aficiones que tiene? (Ej: xxx xxx xxx): ");
-String aficiones = GestorEntradaSalida.leerLinea();
-
-String[] partes = aficiones.split(" ");
-
-List<String> listaAficiones = new ArrayList<>();
-                        for (String aficion : partes) {
-        if (!aficion.isEmpty()){
-        listaAficiones.add(aficion);
-                            }
-                                    }
-
-                                    gestor.anyadirUsuarios(listaAficiones, );
-                        break;
-
-                                case 2:
-                                // Mostrar usuarios
-                                break;
-
-                                case 3:
-                                // Generar fichero concordancias
-                                break;
-
-                                case 4:
-                                // Salir
-                                break;
-                                }
