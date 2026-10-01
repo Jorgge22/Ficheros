@@ -8,7 +8,7 @@ public class Usuario {
     private List<String> aficiones;
 
     public Usuario(String codigo, List<String> aficiones) {
-        this.aficiones = aficiones;
+        this.aficiones = new ArrayList<>(aficiones);
         Collections.sort(aficiones); // Ordenar alfabéticamente
         this.codigo = codigo;
     }

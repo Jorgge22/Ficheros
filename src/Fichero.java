@@ -162,7 +162,7 @@ public class Fichero {
         } else {
             try (FileWriter fileWriter = new FileWriter(ruta, true)) {
                 Usuario usuarioNuevo = new Usuario(generarCodigo(), aficiones);
-                fileWriter.write(usuarioNuevo.toFormatoFichero() + "\n");
+                fileWriter.write("\n" + usuarioNuevo.toFormatoFichero() + "\n");
                 usuarios.add(usuarioNuevo);
             } catch (IOException e) {
                 throw new RuntimeException(e);

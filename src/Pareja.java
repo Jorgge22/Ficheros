@@ -32,4 +32,15 @@ public class Pareja {
     public void setNumeroConcordancia(int numeroConcordancia) {
         this.numeroConcordancia = numeroConcordancia;
     }
+
+    @Override
+    public String toString() {
+        return "====================================================\n" +
+                "  PAREJA DE CONCORDANCIA\n" +
+                "====================================================\n" +
+                "  • Usuario 1     : " + usuario1.getCodigo() + " " + usuario1.getAficiones() + "\n" +
+                "  • Usuario 2     : " + usuario2.getCodigo() + " " + usuario2.getAficiones() + "\n" +
+                "  • Coincidencias : " + numeroConcordancia + " afición(es) en común\n" +
+                "----------------------------------------------------";
+    }
 }
